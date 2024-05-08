@@ -27,7 +27,7 @@ class Product(models.Model):
         max_length=250, unique=True)
     image = models.ImageField(upload_to='products')
     description = models.TextField()
-    price = models.IntegerField()
+    price = models.DecimalField(max_digits=15, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
 
@@ -44,7 +44,6 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
-
 
 
 class SlideShow(models.Model):
