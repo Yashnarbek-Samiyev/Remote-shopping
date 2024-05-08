@@ -44,3 +44,17 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
+
+
+
+class SlideShow(models.Model):
+    title = models.CharField(max_length=250)
+    image = models.ImageField(upload_to='slideshow')
+    description = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-date_created',)
+
+    def __str__(self):
+        return self.title

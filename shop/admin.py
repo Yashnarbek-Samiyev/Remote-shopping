@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.text import slugify
 from django.utils import timezone
-from shop.models import Category, Product
+from shop.models import Category, Product, SlideShow
 
 
 @admin.register(Category)
@@ -69,3 +69,33 @@ class ProductAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('category')
+
+
+@admin.register(SlideShow)
+class SlideShowAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'title',
+        'date_created',
+    )
+    list_display_links = (
+        'id',
+        'title',
+    )
+    list_filter = (
+        'date_created',
+    )
+    search_fields = (
+        'title',
+    )
+    list_per_page = 10
+    save_as = True
+    date_hierarchy = 'date_created'
+    readonly_fields = (
+        'date_created',
+    )
+
+    def save_model(self, request, obj, form, change):
+        if not obj.date_created:
+            obj.date_created = timezone.now()
+        return super().save_model(request, obj, form, change)
