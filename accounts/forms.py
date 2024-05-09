@@ -5,13 +5,6 @@ from accounts.models import User
 
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField(
-        label='Username',
-        widget=forms.TextInput(
-            attrs={'class': 'form-control',
-                   'placeholder': 'Enter your username'}
-        )
-    )
     email = forms.EmailField(
         label='Email',
         widget=forms.EmailInput(

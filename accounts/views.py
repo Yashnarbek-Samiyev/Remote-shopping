@@ -45,16 +45,22 @@ def manager_login(request):
 def user_register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
+        print(form.errors)
         if form.is_valid():
             data = form.cleaned_data
             new_user = User.objects.create_user(
-                data['email'], data['username'], data['password']
+                email=data['email'], password=data['password1'], full_name=data['full_name']
             )
             new_user.is_active = True
             new_user.save()
             messages.success(
                 request, 'Account created successfully', 'success')
             return redirect('accounts:user_login')
+        else:
+            messages.error(
+                request, form.errors, 'danger'
+            )
+            return redirect('accounts:user_register')
     else:
         form = UserRegistrationForm()
     context = {'title': 'Signup', 'form': form}
@@ -67,16 +73,21 @@ def user_login(request):
         if form.is_valid():
             data = form.cleaned_data
             user = authenticate(
-                request, username=data['username'], email=data['email'], password=data['password']
+                request, email=data['email'], password=data['password']
             )
             if user is not None:
                 login(request, user)
-                return redirect('shop:home_page')
+                return redirect('shop:product_list')
             else:
                 messages.error(
                     request, 'username or password is wrong', 'danger'
                 )
                 return redirect('accounts:user_login')
+        else:
+            messages.error(
+                request, 'username or password is wrong', 'danger'
+            )
+            return redirect('accounts:user_login')
     else:
         form = UserLoginForm()
     context = {'title': 'Login', 'form': form}

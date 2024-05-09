@@ -1,11 +1,12 @@
 from django import forms
 from localflavor.us.forms import USStateField, USZipCodeField
 from django.forms import ModelForm
+from parler.forms import TranslatableModelForm
 
 from shop.models import Product, Category
 
 
-class AddProductForm(ModelForm):
+class AddProductForm(TranslatableModelForm):
     class Meta:
         model = Product
         fields = ['category', 'image', 'title', 'description', 'price']
@@ -16,7 +17,7 @@ class AddProductForm(ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
 
 
-class AddCategoryForm(ModelForm):
+class AddCategoryForm(TranslatableModelForm):
     class Meta:
         model = Category
         fields = ['title',]
@@ -26,7 +27,7 @@ class AddCategoryForm(ModelForm):
         self.fields['title'].widget.attrs['class'] = 'form-control'
 
 
-class EditProductForm(ModelForm):
+class EditProductForm(TranslatableModelForm):
     class Meta:
         model = Product
         fields = ['category', 'image', 'title', 'description', 'price']

@@ -19,7 +19,7 @@ def product_list(request, category_slug=None):
                                      translations__slug=category_slug)
         products = products.filter(category=category)
     return render(request,
-                  'shop/product/home_page.html',
+                  'home_page.html',
                   {'category': category,
                    'categories': categories,
                    'products': products})
