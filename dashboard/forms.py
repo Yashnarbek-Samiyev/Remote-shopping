@@ -1,4 +1,5 @@
 from django import forms
+from localflavor.us.forms import USStateField, USZipCodeField
 from django.forms import ModelForm
 
 from shop.models import Product, Category

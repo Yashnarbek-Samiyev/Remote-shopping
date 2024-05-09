@@ -17,7 +17,7 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
-    <title>{% if title %} {{ title }} {% else %} Tech Shop {% endif %}</title>
+    <title>{% if title %} {{ title }} {% else %} {% trans "Tech Shop" %}{% endif %}</title>
     <link
       rel="icon"
       href="{% static 'icons/10364004.png' %}"
@@ -26,6 +26,26 @@
   </head>
   <body>
     <header class="p-2 border-bottom fixed-top bg-light">
+      <div id="header">
+      <a href="/" class="logo">{% trans "My shop" %}</a>
+      {% get_current_language as LANGUAGE_CODE %}
+      {% get_available_languages as LANGUAGES %}
+      {% get_language_info_list for LANGUAGES as languages %}
+      <div class="languages">
+        <p>{% trans "Language" %}:</p>
+        <ul class="languages">
+          {% for language in languages %}
+            <li>
+              <a href="/{{ language.code }}/"
+              {% if language.code == LANGUAGE_CODE %} class="selected"{% endif %}>
+                {{ language.name_local }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
       <div class="container">
         <div class="row align-items-center justify-content-between">
           <!-- Logo -->
@@ -51,7 +71,7 @@
                 id="dropdownUser1"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                >CATEGORIES</a
+                >{% trans "CATEGORIES" %}</a
               >
               <ul class="dropdown-menu" aria-labelledby="dropdownUser1">
                 {% for category in categories %}
@@ -89,7 +109,7 @@
                 placeholder="Search..."
                 aria-label="Search"
               />
-              <button class="btn btn-primary fs-5" type="button">Search</button>
+              <button class="btn btn-primary fs-5" type="button">{% trans "Search" %}</button>
             </form>
           </div>
 
@@ -116,36 +136,36 @@
                     d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"
                   />
                 </svg>
-                Profile
+                {% trans "Profile" %}
               </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownUser1">
                 <li>
                   <a href="{% url 'cart:show_cart' %}" class="dropdown-item"
-                    >Cart</a
+                    >{% trans "Cart" %}</a
                   >
                 </li>
                 <li>
                   <a href="{% url 'shop:favorites' %}" class="dropdown-item"
-                    >Favorites</a
+                    >{%trans "Favorites"%}</a
                   >
                 </li>
                 <li>
                   <a href="{% url 'orders:user_orders' %}" class="dropdown-item"
-                    >Orders</a
+                    >{%trans "Orders"%}</a
                   >
                 </li>
                 <li>
                   <a
                     href="{% url 'accounts:edit_profile' %}"
                     class="dropdown-item"
-                    >Edit Profile</a
+                    >{% trans "Edit Profile" %}</a
                   >
                 </li>
                 <li>
                   <a
                     href="{% url 'accounts:user_logout' %}"
                     class="dropdown-item text-danger"
-                    >Sign out</a
+                    >{%trans "Sign out"%}</a
                   >
                 </li>
               </ul>
@@ -156,12 +176,12 @@
               <a
                 href="{% url 'accounts:user_login' %}"
                 class="btn btn-outline-primary me-2 fs-5"
-                >Login</a
+                >{% trans "Login" %}</a
               >
               <a
                 href="{% url 'accounts:user_register' %}"
                 class="btn btn-primary fs-5"
-                >Sign-up</a
+                >{% trans "Sign-up" %}</a
               >
             </div>
             {% endif %}
@@ -219,7 +239,9 @@
         <div class="alert alert-{{ message.tags }}">{{ message }}</div>
         {% endfor %} {% endif %}
         <!-- content -->
-        {% block content %}{% endblock %}
+        {% block content %}
+        
+        {% endblock %}
       </div>
     </main>
     <!-- Footer -->
@@ -228,54 +250,54 @@
         <div class="row">
           <div class="col-md-3">
             <ul class="list-unstyled">
-              <li class="text-black fw-bold fs-5">Address:</li>
+              <li class="text-black fw-bold fs-5">{% trans "Address:"%}</li>
               <li>
                 <a href="#" class="text-decoration-none text-black-50"
-                  >Tashkent, Chilanzar district</a
+                  >{%trans "Tashkent, Chilanzar district"%}</a
                 >
               </li>
             </ul>
           </div>
           <div class="col-md-3">
             <ul class="list-unstyled">
-              <li class="text-black fw-bold fs-5">Let Us Help You</li>
+              <li class="text-black fw-bold fs-5">{% trans "Let Us Help You" %}</li>
 
               <li>
                 <a href="#" class="text-decoration-none text-black-50"
-                  >News and Blog</a
+                  >{% trans "News and Blog" %}</a
                 >
               </li>
               <li>
-                <a href="#" class="text-decoration-none text-black-50">FAQs</a>
+                <a href="#" class="text-decoration-none text-black-50">{% trans "FAQs" %}</a>
               </li>
               <li>
                 <a href="#" class="text-decoration-none text-black-50"
-                  >About Us</a
+                  >{% trans "About Us" %}</a
                 >
               </li>
               <li>
                 <a href="#" class="text-decoration-none text-black-50"
-                  >Contact Us</a
+                  >{% trans "Contact Us" %}</a
                 >
               </li>
             </ul>
           </div>
           <div class="col-md-3">
             <ul class="list-unstyled">
-              <li class="text-black fw-bold fs-5">Our Company</li>
+              <li class="text-black fw-bold fs-5">{% trans "Our Company" %}</li>
               <li class="text-black-50">
                 <a href="#" class="text-decoration-none text-black-50"
-                  >Location</a
+                  >{% trans "Location" %}</a
                 >
               </li>
               <li>
                 <a href="#" class="text-decoration-none text-black-50"
-                  >For Partners</a
+                  >{% trans "For Partners"%}</a
                 >
               </li>
               <li>
                 <a href="#" class="text-decoration-none text-black-50"
-                  >Careers</a
+                  >{% trans "Careers" %}</a
                 >
               </li>
               <li>

@@ -2,16 +2,17 @@ from django.contrib import admin
 from django.utils.text import slugify
 from django.utils import timezone
 from shop.models import Category, Product, SlideShow
+from parler.admin import TranslatableAdmin
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(TranslatableAdmin):
     list_display = (
         'id',
         'title',
-        'created',
         'is_sub',
-        
+        'created',
+
     )
     list_display_links = (
         'id',
@@ -25,33 +26,45 @@ class CategoryAdmin(admin.ModelAdmin):
     )
     search_fields = (
         'title',
+        'id',
+        'created'
     )
+    list_per_page = 20
+
+    def get_prepopulated_fields(self, request, obj=None):
+        return {'slug': ('title',)}
 
     def save_model(self, request, obj, form, change):
         if not obj.slug:
             obj.slug = slugify(obj.title)
         return super().save_model(request, obj, form, change)
 
+
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(TranslatableAdmin):
     list_display = (
         'id',
         'title',
-        'price',
+        'description',
         'category',
+        'image',
+        'price',
+        'available',
+        'created',
+        'updated'
     )
     list_display_links = (
         'id',
         'title',
     )
     list_filter = (
-        'category',
+        'category', 'available', 'created', 'updated'
     )
     search_fields = (
-        'title', 'slug',
+        'title', 'slug', 'description'
     )
     list_editable = (
-        'price',
+        'price', 'available'
     )
     list_per_page = 10
     list_select_related = (
@@ -60,7 +73,10 @@ class ProductAdmin(admin.ModelAdmin):
     autocomplete_fields = (
         'category',
     )
-    save_as = True
+    list_per_page = 20
+
+    def get_prepopulated_fields(self, request, obj=None):
+        return {'slug': ('title',)}
 
     def save_model(self, request, obj, form, change):
         if not obj.slug:
@@ -89,7 +105,6 @@ class SlideShowAdmin(admin.ModelAdmin):
         'title',
     )
     list_per_page = 10
-    save_as = True
     date_hierarchy = 'date_created'
     readonly_fields = (
         'date_created',
